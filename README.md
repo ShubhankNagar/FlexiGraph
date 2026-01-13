@@ -1,122 +1,167 @@
-# ngx-flexigraph
-
-> A powerful Angular library for building interactive DAG (Directed Acyclic Graph) editors with drag-and-drop reparenting, multi-parent support, and rich export options.
-
-[![npm version](https://img.shields.io/npm/v/ngx-flexigraph.svg)](https://www.npmjs.com/package/ngx-flexigraph)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Angular](https://img.shields.io/badge/Angular-14+-dd0031.svg)](https://angular.io/)
+<p align="center">
+  <img src="docs/assets/banner.png" alt="FlexiGraph Banner" width="100%">
+</p>
 
 <p align="center">
-  <img src="docs/assets/demo-screenshot.png" alt="FlexiGraph Demo" width="800">
+  <strong>A powerful Angular library for building interactive DAG (Directed Acyclic Graph) editors</strong>
 </p>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/ngx-flexigraph">
+    <img src="https://img.shields.io/npm/v/ngx-flexigraph?style=flat-square&color=8b5cf6" alt="npm version">
+  </a>
+  <a href="https://bundlephobia.com/package/ngx-flexigraph">
+    <img src="https://img.shields.io/bundlephobia/minzip/ngx-flexigraph?style=flat-square&color=22c55e" alt="bundle size">
+  </a>
+  <a href="https://angular.io">
+    <img src="https://img.shields.io/badge/Angular-17+-dd0031?style=flat-square&logo=angular&logoColor=white" alt="Angular 17+">
+  </a>
+  <a href="https://www.typescriptlang.org">
+    <img src="https://img.shields.io/badge/TypeScript-5.0+-3178c6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript">
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/github/license/ShubhankNagar/FlexiGraph?style=flat-square&color=yellow" alt="License">
+  </a>
+  <a href="CONTRIBUTING.md">
+    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square" alt="PRs Welcome">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://shubhanknagar.github.io/FlexiGraph/">🌐 Live Demo</a> •
+  <a href="#-quick-start">🚀 Quick Start</a> •
+  <a href="#-features">✨ Features</a> •
+  <a href="docs/API.md">📖 API Docs</a> •
+  <a href="#-contributing">🤝 Contributing</a>
+</p>
+
+---
 
 ## ✨ Features
 
-- 🖱️ **Drag-and-Drop Reparenting** - Intuitive node hierarchy management
-- 🔗 **Multi-Parent Support** - Hold Shift while dragging for DAG structures
-- 📤 **Rich Export** - PNG, SVG, PDF, JSON, CSV formats
-- ↩️ **Undo/Redo** - Full history with Ctrl+Z/Y
-- 🎨 **4 Themes** - Dark, Light, Blue, High Contrast
-- 📐 **6 Layouts** - Dagre, Breadth-first, CoSE, Grid, Circle, Concentric
-- 🔍 **Search & Filter** - Find nodes quickly
-- 📦 **Collapse/Expand** - Group node hierarchies
-- ⌨️ **Keyboard Shortcuts** - Professional workflow support
-- 🎯 **Context Menu** - Right-click for all actions
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <h3>🖱️ Drag & Drop</h3>
+      <p>Intuitive node reparenting with visual feedback</p>
+    </td>
+    <td align="center" width="33%">
+      <h3>🔗 Multi-Parent</h3>
+      <p>Hold Shift to create DAG structures</p>
+    </td>
+    <td align="center" width="33%">
+      <h3>📤 Rich Export</h3>
+      <p>PNG, SVG, PDF, JSON, CSV formats</p>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <h3>↩️ Undo/Redo</h3>
+      <p>Full history with Ctrl+Z/Y</p>
+    </td>
+    <td align="center">
+      <h3>🎨 4 Themes</h3>
+      <p>Dark, Light, Blue, High Contrast</p>
+    </td>
+    <td align="center">
+      <h3>📐 6 Layouts</h3>
+      <p>Dagre, Tree, Force, Grid, Circle</p>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <h3>📦 Collapse/Expand</h3>
+      <p>Group node hierarchies</p>
+    </td>
+    <td align="center">
+      <h3>🔍 Search</h3>
+      <p>Find nodes quickly</p>
+    </td>
+    <td align="center">
+      <h3>⌨️ Keyboard</h3>
+      <p>Full shortcut support</p>
+    </td>
+  </tr>
+</table>
+
+---
 
 ## 🚀 Quick Start
 
-### Installation
+### 1. Install
 
 ```bash
 npm install ngx-flexigraph cytoscape cytoscape-dagre
 ```
 
-### Basic Usage
+### 2. Import
 
 ```typescript
-import { Component } from '@angular/core';
-import { FlexiGraphComponent, FlexiNode } from 'ngx-flexigraph';
+import { FlexiGraphComponent } from 'ngx-flexigraph';
 
 @Component({
-  selector: 'app-root',
   standalone: true,
   imports: [FlexiGraphComponent],
-  template: `
-    <flexi-graph
-      [nodes]="nodes"
-      (nodeClick)="onNodeClick($event)"
-      (nodeReparent)="onReparent($event)">
-    </flexi-graph>
-  `
+  // ...
 })
-export class AppComponent {
-  nodes: FlexiNode[] = [
-    { id: '1', label: 'Root', parentIds: [] },
-    { id: '2', label: 'Child A', parentIds: ['1'] },
-    { id: '3', label: 'Child B', parentIds: ['1'] },
-  ];
-
-  onNodeClick(event: any) {
-    console.log('Clicked:', event.node);
-  }
-
-  onReparent(event: any) {
-    console.log('Reparented:', event.node);
-  }
-}
 ```
 
-## 📖 API Reference
+### 3. Use
 
-### Inputs
+```html
+<flexi-graph
+  [nodes]="nodes"
+  (nodeClick)="onNodeClick($event)"
+  (nodeReparent)="onReparent($event)">
+</flexi-graph>
+```
 
-| Input | Type | Default | Description |
-|-------|------|---------|-------------|
-| `nodes` | `FlexiNode[]` | `[]` | Array of nodes to display |
-| `config` | `FlexiGraphConfig` | See below | Configuration object |
+```typescript
+nodes = [
+  { id: '1', label: 'Root', parentIds: [] },
+  { id: '2', label: 'Child A', parentIds: ['1'] },
+  { id: '3', label: 'Child B', parentIds: ['1'] },
+];
+```
 
-### Outputs
+---
 
-| Output | Type | Description |
-|--------|------|-------------|
-| `nodeClick` | `NodeEvent` | Fired when a node is clicked |
-| `nodeReparent` | `ReparentEvent` | Fired when a node is reparented |
-| `stateChange` | `StateChangeEvent` | Fired when undo/redo state changes |
-| `validationFailed` | `ValidationEvent` | Fired when validation fails |
+## 📸 Screenshots
 
-### Configuration
+<p align="center">
+  <img src="docs/assets/screenshots/dark-theme.png" alt="Dark Theme" width="45%">
+  <img src="docs/assets/screenshots/light-theme.png" alt="Light Theme" width="45%">
+</p>
+
+---
+
+## ⚙️ Configuration
 
 ```typescript
 const config: FlexiGraphConfig = {
   styling: {
     theme: 'dark', // 'light' | 'blue' | 'high-contrast'
     nodeStyle: {
-      backgroundColor: '#27272a',
-      borderColor: '#3f3f46',
-      textColor: '#fafafa',
       shape: 'round-rectangle',
       width: 160,
       height: 44
     }
   },
   layout: {
-    algorithm: 'dagre', // 'breadthfirst' | 'cose' | 'grid' | 'circle'
-    direction: 'LR',    // 'TB' | 'BT' | 'RL'
+    algorithm: 'dagre',
+    direction: 'LR', // 'TB' | 'BT' | 'RL'
     animate: true
   },
   multiParent: {
     enabled: true,
-    modifier: 'shift',
-    maxParents: 5
-  },
-  zoomPan: {
-    enableZoom: true,
-    showZoomControls: true,
-    minZoom: 0.3,
-    maxZoom: 2.5
+    modifier: 'shift'
   }
 };
 ```
+
+See [full API documentation](docs/API.md) for all options.
+
+---
 
 ## ⌨️ Keyboard Shortcuts
 
@@ -124,80 +169,69 @@ const config: FlexiGraphConfig = {
 |-----|--------|
 | `C` | Collapse selected node |
 | `E` | Expand selected node |
-| `A` | Add child to selected |
+| `A` | Add child node |
 | `D` | Detach from parent |
-| `Delete` | Delete selected node |
-| `F2` | Rename selected node |
+| `Delete` | Delete node |
+| `F2` | Rename node |
 | `Ctrl+Z` | Undo |
 | `Ctrl+Y` | Redo |
-| `+/-` | Zoom in/out |
+| `+` / `-` | Zoom in/out |
 | `0` | Reset zoom |
 
-## 🎨 Themes
-
-```typescript
-// Built-in themes
-config.styling.theme = 'dark';   // Dark mode
-config.styling.theme = 'light';  // Light mode
-config.styling.theme = 'blue';   // Blue accent
-config.styling.theme = 'high-contrast'; // Accessibility
-```
-
-## 📤 Export
-
-```typescript
-// Programmatic export
-await graphComponent.exportGraph('png');
-await graphComponent.exportGraph('svg');
-await graphComponent.exportGraph('pdf');
-await graphComponent.exportGraph('json');
-await graphComponent.exportGraph('csv');
-```
+---
 
 ## 🏗️ Development
 
 ```bash
-# Clone repository
+# Clone
 git clone https://github.com/ShubhankNagar/FlexiGraph.git
 cd FlexiGraph
 
-# Install dependencies
+# Install
 npm install
 
 # Build library
-npm run build:lib
+npx ng build ngx-flexigraph
 
 # Run demo
-npm run start:demo
+npx ng serve demo
 
 # Run tests
-npm run test:lib
+npx ng test ngx-flexigraph
 ```
+
+---
 
 ## 📁 Project Structure
 
 ```
 FlexiGraph/
 ├── projects/
-│   ├── ngx-flexigraph/     # Library source
+│   ├── ngx-flexigraph/      # 📦 Library
 │   │   ├── src/lib/
-│   │   │   ├── components/ # FlexiGraph, ContextMenu, etc.
-│   │   │   ├── services/   # History, Export, Collapse, etc.
-│   │   │   └── utils/      # Cytoscape transforms
+│   │   │   ├── components/  # FlexiGraph, ContextMenu, etc.
+│   │   │   ├── services/    # History, Export, Collapse
+│   │   │   └── utils/       # Cytoscape transforms
 │   │   └── package.json
-│   └── demo/               # Demo application
-└── package.json            # Workspace root
+│   └── demo/                # 🎮 Demo App
+├── docs/                    # 📖 Documentation
+├── .github/                 # 🔧 CI/CD Workflows
+└── README.md
 ```
+
+---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details.
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) first.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+1. Fork the repo
+2. Create a feature branch: `git checkout -b feature/amazing`
+3. Commit changes: `git commit -m 'feat: add amazing feature'`
+4. Push: `git push origin feature/amazing`
 5. Open a Pull Request
+
+---
 
 ## 📄 License
 
@@ -206,7 +240,9 @@ MIT © [Shubhank Nagar](https://github.com/ShubhankNagar)
 ---
 
 <p align="center">
-  <a href="https://shubhanknagar.github.io/FlexiGraph/">Live Demo</a> •
-  <a href="https://www.npmjs.com/package/ngx-flexigraph">NPM</a> •
-  <a href="https://github.com/ShubhankNagar/FlexiGraph/issues">Issues</a>
+  <sub>Built with ❤️ using Angular and Cytoscape.js</sub>
+</p>
+
+<p align="center">
+  <a href="https://github.com/ShubhankNagar/FlexiGraph/stargazers">⭐ Star this repo</a> if you find it useful!
 </p>
