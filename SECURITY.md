@@ -18,7 +18,7 @@ We take security seriously. If you discover a security vulnerability, please fol
 
 ### Do
 
-1. **Email us directly** at [shubhank.nagar@example.com] with:
+1. **Email us directly** at [shubhanknagar@gmail.com] with:
    - Description of the vulnerability
    - Steps to reproduce
    - Potential impact
