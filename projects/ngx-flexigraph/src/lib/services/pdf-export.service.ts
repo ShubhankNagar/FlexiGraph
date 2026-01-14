@@ -195,12 +195,11 @@ export class PDFExportService {
     }
 
     // Try dynamic import (npm package)
-    // Using Function constructor to avoid static analysis of import path
     try {
-      const importFn = new Function('path', 'return import(path)');
-      const module = await importFn('jspdf');
+      // Direct dynamic import - webpack/esbuild will handle this
+      const module = await import('jspdf');
       this.jsPDF = module.jsPDF || module.default;
-    } catch {
+    } catch (err) {
       // jsPDF not available - will throw error when export is attempted
       console.warn(
         'jsPDF not found. To enable PDF export, install with: npm install jspdf\n' +

@@ -161,80 +161,114 @@ export class AppComponent implements AfterViewInit {
   }
 
   // Config getter
-  getConfig = (): FlexiGraphConfig => ({
-    ...DEFAULT_FLEXIGRAPH_CONFIG,
-    styling: {
-      theme: this.state.currentTheme() as any,
-      nodeStyle: {
-        backgroundColor: this.state.currentTheme() === 'dark' ? '#27272a' : '#f1f5f9',
-        borderColor: this.state.currentTheme() === 'dark' ? '#3f3f46' : '#94a3b8',
-        textColor: this.state.currentTheme() === 'dark' ? '#fafafa' : '#1e293b',
-        borderWidth: 2,
-        shape: 'round-rectangle',
-        width: 160,
-        height: 44,
-        padding: 14,
-        fontSize: 13,
-        fontFamily: 'Inter, system-ui, sans-serif'
+  getConfig = (): FlexiGraphConfig => {
+    const theme = this.state.currentTheme();
+    
+    // Theme-specific colors
+    const themeColors = {
+      dark: {
+        bgColor: '#09090b',
+        nodeBg: '#27272a',
+        nodeBorder: '#3f3f46',
+        nodeText: '#fafafa',
+        edgeColor: '#52525b',
+        arrowColor: '#71717a'
       },
-      selectedNodeStyle: {
-        backgroundColor: '#8b5cf6',
-        borderColor: '#a78bfa',
-        textColor: '#fff',
-        borderWidth: 2
+      light: {
+        bgColor: '#ffffff',
+        nodeBg: '#f1f5f9',
+        nodeBorder: '#94a3b8',
+        nodeText: '#1e293b',
+        edgeColor: '#64748b',
+        arrowColor: '#475569'
       },
-      hoveredNodeStyle: {
-        borderColor: '#8b5cf6',
-        borderWidth: 2
+      blue: {
+        bgColor: '#0c1929',
+        nodeBg: '#1e3a5f',
+        nodeBorder: '#3b82f6',
+        nodeText: '#e0f2fe',
+        edgeColor: '#3b82f6',
+        arrowColor: '#60a5fa'
+      }
+    };
+    
+    const colors = themeColors[theme as keyof typeof themeColors] || themeColors.dark;
+    
+    return {
+      ...DEFAULT_FLEXIGRAPH_CONFIG,
+      styling: {
+        theme: theme as any,
+        nodeStyle: {
+          backgroundColor: colors.nodeBg,
+          borderColor: colors.nodeBorder,
+          textColor: colors.nodeText,
+          borderWidth: 2,
+          shape: 'round-rectangle',
+          width: 160,
+          height: 44,
+          padding: 14,
+          fontSize: 13,
+          fontFamily: 'Inter, system-ui, sans-serif'
+        },
+        selectedNodeStyle: {
+          backgroundColor: theme === 'blue' ? '#3b82f6' : '#8b5cf6',
+          borderColor: theme === 'blue' ? '#60a5fa' : '#a78bfa',
+          textColor: '#fff',
+          borderWidth: 2
+        },
+        hoveredNodeStyle: {
+          borderColor: theme === 'blue' ? '#3b82f6' : '#8b5cf6',
+          borderWidth: 2
+        },
+        edgeStyle: {
+          lineColor: colors.edgeColor,
+          arrowColor: colors.arrowColor,
+          lineWidth: 2,
+          curveStyle: 'bezier',
+          targetArrowShape: 'triangle'
+        },
+        backgroundColor: colors.bgColor
       },
-      edgeStyle: {
-        lineColor: this.state.currentTheme() === 'dark' ? '#52525b' : '#64748b',
-        arrowColor: this.state.currentTheme() === 'dark' ? '#71717a' : '#475569',
-        lineWidth: 2,
-        curveStyle: 'bezier',
-        targetArrowShape: 'triangle'
+      layout: {
+        algorithm: this.state.currentLayout() as LayoutType,
+        direction: this.state.currentDemo() === 'org-chart' ? 'TB' : 'LR',
+        animate: true,
+        animationDuration: 300,
+        animationEasing: 'ease-out',
+        nodeSpacing: 60,
+        rankSpacing: 140,
+        fit: true,
+        padding: 40
       },
-      backgroundColor: this.state.currentTheme() === 'dark' ? '#09090b' : '#ffffff'
-    },
-    layout: {
-      algorithm: this.state.currentLayout() as LayoutType,
-      direction: this.state.currentDemo() === 'org-chart' ? 'TB' : 'LR',
-      animate: true,
-      animationDuration: 300,
-      animationEasing: 'ease-out',
-      nodeSpacing: 60,
-      rankSpacing: 140,
-      fit: true,
-      padding: 40
-    },
-    multiParent: { enabled: true, modifier: 'shift', maxParents: 5 },
-    zoomPan: {
-      enableZoom: true,
-      enablePan: true,
-      showZoomControls: false, // Using custom toolbar
-      controlsPosition: 'bottom-right',
-      minZoom: 0.3,
-      maxZoom: 2.5,
-      zoomSensitivity: 0.1,
-      enablePinchZoom: true,
-      doubleClickZoom: true,
-      smoothZoom: true,
-      zoomAnimationDuration: 200
-    },
-    interaction: {
-      enableDrag: true,
-      enableContextMenu: true,
-      enableBoxSelection: false,
-      snapBackOnInvalid: true,
-      snapBackDuration: 250
-    },
-    export: {
-      enabled: true,
-      filename: `flexigraph-${this.state.currentDemo()}`,
-      defaultScale: 2,
-      formats: ['png', 'jpeg', 'svg', 'json', 'csv', 'pdf']
-    }
-  });
+      multiParent: { enabled: true, modifier: 'shift', maxParents: 5 },
+      zoomPan: {
+        enableZoom: true,
+        enablePan: true,
+        showZoomControls: false,
+        controlsPosition: 'bottom-right',
+        minZoom: 0.3,
+        maxZoom: 2.5,
+        zoomSensitivity: 0.1,
+        enablePinchZoom: true,
+        doubleClickZoom: true,
+        smoothZoom: true,
+        zoomAnimationDuration: 200
+      },
+      interaction: {
+        enableDrag: true,
+        enableContextMenu: true,
+        enableBoxSelection: false,
+        snapBackOnInvalid: true,
+        snapBackDuration: 250
+      },
+      export: {
+        enabled: true,
+        filename: `flexigraph-${this.state.currentDemo()}`,
+        defaultScale: 2,
+        formats: ['png', 'jpeg', 'svg', 'json', 'csv', 'pdf']
+      }
+    };
+  };
 
   // Event handlers
   onNodeClick(event: NodeEvent): void {

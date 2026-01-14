@@ -59,11 +59,11 @@ export const DARK_THEME: GraphTheme = {
 };
 
 export const BLUE_THEME: GraphTheme = {
-  backgroundColor: '#f0f7ff',
+  backgroundColor: '#0c1929',
   nodeStyle: {
-    backgroundColor: '#ffffff',
-    borderColor: '#007bff',
-    textColor: '#0056b3',
+    backgroundColor: '#1e3a5f',
+    borderColor: '#3b82f6',
+    textColor: '#e0f2fe',
     borderWidth: 2,
     shape: 'round-rectangle',
     width: 'label',
@@ -73,13 +73,13 @@ export const BLUE_THEME: GraphTheme = {
     fontFamily: 'Inter, system-ui, sans-serif'
   },
   selectedNodeStyle: {
-    backgroundColor: '#0056b3',
-    borderColor: '#003f7f',
+    backgroundColor: '#3b82f6',
+    borderColor: '#60a5fa',
     textColor: '#ffffff'
   },
   edgeStyle: {
-    lineColor: '#007bff',
-    arrowColor: '#007bff',
+    lineColor: '#3b82f6',
+    arrowColor: '#60a5fa',
     lineWidth: 2,
     curveStyle: 'bezier',
     targetArrowShape: 'triangle',

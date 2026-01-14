@@ -204,6 +204,8 @@ export class FloatingToolbarComponent {
 
   onLayoutChange(layout: LayoutType): void {
     this.state.setLayout(layout);
+    // Trigger re-layout after state change
+    setTimeout(() => this.resetLayout.emit(), 50);
   }
 
   setZoomLevel(level: number): void {

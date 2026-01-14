@@ -972,7 +972,11 @@ export class FlexiGraphComponent<T = any> implements AfterViewInit, OnDestroy, O
     const updated = this.graphService.updateNode(node.id, { label: newLabel });
     
     if (updated) {
-      this.syncCytoscapeWithService();
+      // Update Cytoscape node label in-place (avoid full sync which loses positions)
+      const cyNode = this.cy?.getElementById(node.id);
+      if (cyNode && cyNode.length > 0) {
+        cyNode.data('label', newLabel);
+      }
       this.nodeRename.emit({ node: updated, oldLabel, newLabel });
       this.emitStateChange();
     }
