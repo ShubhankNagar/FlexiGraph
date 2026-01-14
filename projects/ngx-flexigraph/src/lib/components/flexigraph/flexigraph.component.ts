@@ -26,6 +26,8 @@ import cytoscape, { Core, NodeSingular, EdgeSingular, Position } from 'cytoscape
 
 // @ts-ignore - cytoscape-dagre has no type definitions
 import dagre from 'cytoscape-dagre';
+// @ts-ignore - cytoscape-svg has no type definitions
+import svg from 'cytoscape-svg';
 
 import { FlexiGraphService } from '../../services/flexigraph.service';
 import { StableLayoutService, LayoutChange, PositionCache } from '../../services/stable-layout.service';
@@ -49,8 +51,9 @@ import {
 import { getThemePreset } from '../../styles/themes';
 import { wouldCreateCycle, deepCloneNodes } from '../../utils/graph-algorithms';
 
-// Register dagre layout
+// Register cytoscape extensions
 cytoscape.use(dagre);
+cytoscape.use(svg);
 
 import { HistoryService } from '../../services/history.service';
 import { ValidationService } from '../../services/validation.service';

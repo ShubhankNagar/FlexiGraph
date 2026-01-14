@@ -1,0 +1,113 @@
+.sidebar {
+    position: fixed;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
+
+    &.expanded {
+        .demo-icons {
+            display: none;
+        }
+
+        .demo-cards {
+            display: flex;
+        }
+    }
+}
+
+.demo-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px;
+    background: rgba(15, 15, 18, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.demo-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--bg-elevated);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+        transform: scale(1.05);
+        border-color: var(--demo-color);
+    }
+
+    &.active {
+        background: var(--accent-subtle);
+        border-color: var(--accent);
+    }
+}
+
+.demo-cards {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+    background: rgba(15, 15, 18, 0.95);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    min-width: 220px;
+}
+
+.demo-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: left;
+
+    &:hover {
+        background: var(--bg-elevated);
+    }
+
+    &.active {
+        background: var(--accent-subtle);
+        border-color: var(--accent);
+    }
+}
+
+.card-icon {
+    font-size: 24px;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.card-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.card-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.active-indicator {
+    color: var(--accent);
+}

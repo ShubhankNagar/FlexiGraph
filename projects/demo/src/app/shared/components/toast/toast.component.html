@@ -1,0 +1,24 @@
+<div class="toast-container">
+    @for (toast of state.toasts(); track toast.id) {
+    <div class="toast" [class.success]="toast.type === 'success'" [class.error]="toast.type === 'error'"
+        [class.info]="toast.type === 'info'">
+        <span class="toast-icon">
+            @switch (toast.type) {
+            @case ('success') { ✓ }
+            @case ('error') { ✕ }
+            @default { ℹ }
+            }
+        </span>
+        <span class="toast-message">{{ toast.message }}</span>
+        <button class="toast-close" (click)="state.dismissToast(toast.id)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+        </button>
+        @if (toast.duration) {
+        <div class="toast-progress" [style.animation-duration.ms]="toast.duration"></div>
+        }
+    </div>
+    }
+</div>

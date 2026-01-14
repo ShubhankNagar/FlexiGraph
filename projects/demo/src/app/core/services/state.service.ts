@@ -1,7 +1,9 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { FlexiNode } from 'ngx-flexigraph';
 
-// Demo data sets
+/**
+ * Demo data sets for the FlexiGraph application
+ */
 export const DEMO_DATA = {
   'po-hierarchy': {
     name: 'Purchase Orders',
@@ -69,9 +71,13 @@ export interface Toast {
   duration?: number;
 }
 
+/**
+ * Global application state service
+ * Manages graph data, UI state, and notifications
+ */
 @Injectable({ providedIn: 'root' })
-export class DemoStateService {
-  // Demo state
+export class AppStateService {
+  // Graph data
   readonly currentDemo = signal<DemoType>('po-hierarchy');
   readonly nodes = signal<FlexiNode[]>(DEMO_DATA['po-hierarchy'].nodes);
   
@@ -86,14 +92,16 @@ export class DemoStateService {
   private toastId = 0;
   readonly toasts = signal<Toast[]>([]);
   
-  // Computed
+  // Computed properties
   readonly currentDemoData = computed(() => DEMO_DATA[this.currentDemo()]);
   readonly demoList = Object.entries(DEMO_DATA).map(([key, data]) => ({
     key: key as DemoType,
     ...data
   }));
 
-  // Actions
+  /**
+   * Load a new demo dataset
+   */
   setDemo(key: DemoType): void {
     const demo = DEMO_DATA[key];
     if (demo) {

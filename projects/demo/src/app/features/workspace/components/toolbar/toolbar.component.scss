@@ -1,0 +1,117 @@
+.toolbar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(15, 15, 18, 0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 100;
+
+    &.visible {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.tool-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    label {
+        font-size: 10px;
+        font-weight: 500;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    select {
+        padding: 4px 8px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-subtle);
+        border-radius: 6px;
+        color: var(--text);
+        font-size: 11px;
+        cursor: pointer;
+
+        &:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+    }
+}
+
+.divider {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+}
+
+.theme-toggle {
+    display: flex;
+    background: var(--bg-elevated);
+    border-radius: 6px;
+    padding: 2px;
+}
+
+.theme-btn {
+    padding: 4px 6px;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.15s;
+
+    &:hover {
+        opacity: 0.8;
+    }
+
+    &.active {
+        background: var(--accent);
+        opacity: 1;
+    }
+}
+
+.zoom-group {
+    gap: 4px;
+}
+
+.zoom-level {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-muted);
+    min-width: 32px;
+    text-align: center;
+}
+
+.icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    background: var(--bg-elevated);
+    border: none;
+    border-radius: 6px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover {
+        background: var(--bg-surface);
+        color: var(--text);
+    }
+}

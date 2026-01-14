@@ -1,0 +1,32 @@
+<div class="sidebar" [class.expanded]="expanded()">
+    <!-- Collapsed: Show icons only -->
+    <div class="demo-icons" (mouseenter)="expanded.set(true)">
+        @for (demo of state.demoList; track demo.key) {
+        <button class="demo-icon-btn" [class.active]="state.currentDemo() === demo.key"
+            [style.--demo-color]="demo.color" (click)="selectDemo(demo.key)" [title]="demo.name">
+            <span class="icon">{{ demo.icon }}</span>
+        </button>
+        }
+    </div>
+
+    <!-- Expanded: Show full cards -->
+    <div class="demo-cards" (mouseleave)="expanded.set(false)">
+        @for (demo of state.demoList; track demo.key) {
+        <button class="demo-card" [class.active]="state.currentDemo() === demo.key" [style.--demo-color]="demo.color"
+            (click)="selectDemo(demo.key)">
+            <span class="card-icon">{{ demo.icon }}</span>
+            <div class="card-content">
+                <span class="card-name">{{ demo.name }}</span>
+                <span class="card-desc">{{ demo.description }}</span>
+            </div>
+            @if (state.currentDemo() === demo.key) {
+            <span class="active-indicator">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="20 6 9 17 4 12" />
+                </svg>
+            </span>
+            }
+        </button>
+        }
+    </div>
+</div>

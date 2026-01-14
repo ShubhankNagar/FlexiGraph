@@ -1,0 +1,76 @@
+<header class="header">
+    <!-- Logo -->
+    <div class="logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">FlexiGraph</span>
+    </div>
+
+    <!-- Center: Demo Name -->
+    <div class="demo-title">
+        <span class="demo-icon">{{ state.currentDemoData().icon }}</span>
+        <span class="demo-name">{{ state.currentDemoData().name }}</span>
+    </div>
+
+    <!-- Right: Actions -->
+    <div class="actions">
+        <!-- Undo/Redo -->
+        <div class="action-group">
+            <button class="icon-btn" [disabled]="!state.canUndo()" (click)="undo.emit()" title="Undo (Ctrl+Z)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 10h10a8 8 0 0 1 8 8v2M3 10l6 6M3 10l6-6" />
+                </svg>
+            </button>
+            <button class="icon-btn" [disabled]="!state.canRedo()" (click)="redo.emit()" title="Redo (Ctrl+Y)">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10h-10a8 8 0 0 0-8 8v2M21 10l-6 6M21 10l-6-6" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Export -->
+        <div class="dropdown">
+            <button class="action-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+                </svg>
+                <span>Export</span>
+            </button>
+            <div class="dropdown-menu">
+                <button (click)="exportAs.emit('png')">🖼️ PNG</button>
+                <button (click)="exportAs.emit('svg')">🎨 SVG</button>
+                <button (click)="exportAs.emit('pdf')">📄 PDF</button>
+                <hr>
+                <button (click)="exportAs.emit('json')">📦 JSON</button>
+                <button (click)="exportAs.emit('csv')">📋 CSV</button>
+            </div>
+        </div>
+
+        <!-- Import -->
+        <div class="dropdown">
+            <button class="action-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                </svg>
+                <span>Import</span>
+            </button>
+            <div class="dropdown-menu">
+                <button (click)="importFrom.emit('json')">📦 JSON</button>
+                <button (click)="importFrom.emit('csv')">📋 CSV</button>
+            </div>
+        </div>
+
+        <!-- Save -->
+        <button class="save-btn" [class.has-changes]="state.isDirty()" [disabled]="!state.isDirty()"
+            (click)="save.emit()">
+            @if (state.isDirty()) {
+            <span class="pulse-dot"></span>
+            }
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                <polyline points="17 21 17 13 7 13 7 21" />
+                <polyline points="7 3 7 8 15 8" />
+            </svg>
+            <span>Save</span>
+        </button>
+    </div>
+</header>

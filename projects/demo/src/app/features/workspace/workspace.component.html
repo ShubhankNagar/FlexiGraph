@@ -1,0 +1,35 @@
+<div class="workspace">
+    <!-- Header -->
+    <app-header (undo)="onUndo()" (redo)="onRedo()" (save)="onSave()" (exportAs)="onExport($event)"
+        (importFrom)="onImport($event)">
+    </app-header>
+
+    <!-- Main Canvas Area -->
+    <main class="canvas">
+        <!-- FlexiGraph Component -->
+        <flexi-graph [nodes]="state.nodes()" [config]="graphConfig" (nodeClick)="onNodeClick($event)"
+            (nodeReparent)="onNodeReparent($event)" (stateChange)="onStateChange($event)"
+            (validationFailed)="onValidationFailed($event)" (zoomChange)="onZoomChange($event)" #graph>
+        </flexi-graph>
+
+        <!-- Sidebar (Demo Selector) -->
+        <app-sidebar></app-sidebar>
+
+        <!-- Floating Toolbar -->
+        <app-toolbar (zoomIn)="graphComponent.zoomIn()" (zoomOut)="graphComponent.zoomOut()"
+            (zoomFit)="graphComponent.zoomFit()" (resetLayout)="graphComponent.forceFullLayout()" #toolbar>
+        </app-toolbar>
+
+        <!-- Help Hint -->
+        <div class="canvas-hint">
+            <span>Drag to reparent</span>
+            <span class="separator">•</span>
+            <span><kbd>Shift</kbd> + drag for multi-parent</span>
+            <span class="separator">•</span>
+            <span>Right-click for menu</span>
+        </div>
+    </main>
+
+    <!-- Toast Notifications -->
+    <app-toast></app-toast>
+</div>
