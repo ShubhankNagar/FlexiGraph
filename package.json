@@ -63,7 +63,7 @@
     "@storybook/addon-docs": "^10.1.11",
     "@storybook/addon-onboarding": "^10.1.11",
     "@storybook/angular": "^10.1.11",
-    "@types/cytoscape": "^3.21.0",
+    "@types/cytoscape": "^3.31.0",
     "@types/jasmine": "^5.1.13",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",
