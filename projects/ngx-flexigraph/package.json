@@ -1,38 +1,43 @@
 {
   "name": "ngx-flexigraph",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Interactive DAG editor for Angular with drag-and-drop reparenting, multi-parent support, cycle detection, zoom controls, and export capabilities",
   "keywords": [
     "angular",
     "cytoscape",
     "graph",
     "dag",
+    "directed-acyclic-graph",
     "editor",
     "visualization",
     "hierarchy",
     "tree",
+    "org-chart",
     "organizational-chart",
     "dependency-graph",
     "flexigraph",
     "zoom",
     "export",
+    "pdf",
     "drag-drop",
     "multi-parent",
-    "workflow"
+    "workflow",
+    "node-editor",
+    "flowchart"
   ],
   "author": "Shubhank Nagar",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/ngx-flexigraph.git"
+    "url": "git+https://github.com/ShubhankNagar/FlexiGraph.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/ngx-flexigraph/issues"
+    "url": "https://github.com/ShubhankNagar/FlexiGraph/issues"
   },
-  "homepage": "https://github.com/yourusername/ngx-flexigraph#readme",
+  "homepage": "https://shubhanknagar.github.io/FlexiGraph/",
   "peerDependencies": {
-    "@angular/common": "^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
-    "@angular/core": "^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+    "@angular/common": "^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0",
+    "@angular/core": "^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0",
     "cytoscape": "^3.23.0",
     "cytoscape-dagre": "^2.5.0"
   },

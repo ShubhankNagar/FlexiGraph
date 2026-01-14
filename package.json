@@ -4,14 +4,23 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve demo",
+    "start:demo": "ng serve demo",
     "build": "ng build",
     "build:lib": "ng build ngx-flexigraph",
+    "build:lib:prod": "ng build ngx-flexigraph --configuration production",
+    "build:demo": "ng build demo",
+    "build:demo:prod": "ng build demo --configuration production",
+    "build:all": "npm run build:lib:prod && npm run build:demo:prod",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:lib": "ng test ngx-flexigraph",
+    "test:lib:ci": "ng test ngx-flexigraph --watch=false --browsers=ChromeHeadless",
     "e2e": "ng e2e",
+    "lint": "ng lint",
     "docs:json": "compodoc -p ./projects/ngx-flexigraph/tsconfig.lib.json -e json -d ./projects/ngx-flexigraph",
     "storybook": "ng run ngx-flexigraph:storybook",
-    "build-storybook": "ng run ngx-flexigraph:build-storybook"
+    "build-storybook": "ng run ngx-flexigraph:build-storybook",
+    "prepublishOnly": "npm run build:lib:prod"
   },
   "prettier": {
     "printWidth": 100,
