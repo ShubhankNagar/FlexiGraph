@@ -115,3 +115,25 @@
         color: var(--text);
     }
 }
+
+.lock-toggle {
+    position: relative;
+    width: auto;
+    padding: 0 8px;
+    gap: 4px;
+
+    &.has-locked {
+        background: rgba(245, 158, 11, 0.15);
+        color: #f59e0b;
+
+        &:hover {
+            background: rgba(245, 158, 11, 0.25);
+            color: #fbbf24;
+        }
+    }
+}
+
+.lock-count {
+    font-size: 10px;
+    font-weight: 600;
+}

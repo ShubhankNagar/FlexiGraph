@@ -26,9 +26,72 @@ export interface LayoutChange {
 @Injectable()
 export class StableLayoutService {
   private _positionCache = signal<PositionCache>({});
+  private _manualPositions = signal<PositionCache>({});
   private _isFirstLayout = signal<boolean>(true);
   
   readonly positionCache = this._positionCache.asReadonly();
+  readonly manualPositions = this._manualPositions.asReadonly();
+
+  /**
+   * Cache position for a single node (called when user manually drags)
+   * These positions are protected and preserved during layouts
+   */
+  cacheNodePosition(cy: Core, nodeId: string): void {
+    const node = cy.getElementById(nodeId);
+    if (node.length === 0 || !node.isNode()) return;
+    
+    const pos = (node as NodeSingular).position();
+    
+    // Add to manual positions (protected from layout)
+    this._manualPositions.update(cache => ({
+      ...cache,
+      [nodeId]: { ...pos }
+    }));
+    
+    // Also update general cache
+    this._positionCache.update(cache => ({
+      ...cache,
+      [nodeId]: { ...pos }
+    }));
+  }
+
+  /**
+   * Check if a node has a manually set position
+   */
+  hasManualPosition(nodeId: string): boolean {
+    return nodeId in this._manualPositions();
+  }
+
+  /**
+   * Clear manual position for a node (useful for "unlock position")
+   */
+  clearManualPosition(nodeId: string): void {
+    this._manualPositions.update(cache => {
+      const { [nodeId]: _, ...rest } = cache;
+      return rest;
+    });
+  }
+
+  /**
+   * Clear all manual positions (useful for "unlock all" or layout change)
+   */
+  clearAllManualPositions(): void {
+    this._manualPositions.set({});
+  }
+
+  /**
+   * Get count of locked nodes
+   */
+  getLockedNodeCount(): number {
+    return Object.keys(this._manualPositions()).length;
+  }
+
+  /**
+   * Get all locked node IDs
+   */
+  getLockedNodeIds(): string[] {
+    return Object.keys(this._manualPositions());
+  }
 
   /**
    * Cache current positions from Cytoscape instance
@@ -87,14 +150,27 @@ export class StableLayoutService {
 
   /**
    * Run a full dagre layout
+   * Respects manually positioned nodes by locking them during layout
    */
   private runFullLayout(cy: Core, config: LayoutConfig): void {
+    const manualPositions = this._manualPositions();
     const options = this.buildLayoutOptions(config);
     
+    // Lock nodes that have been manually positioned by user
+    Object.keys(manualPositions).forEach(nodeId => {
+      const node = cy.getElementById(nodeId);
+      if (node.length > 0 && node.isNode()) {
+        (node as NodeSingular).position(manualPositions[nodeId]);
+        (node as NodeSingular).lock();
+      }
+    });
+    
+    // Run layout (only unlocked nodes will move)
     cy.layout(options).run();
     
-    // Wait for layout to complete before caching
+    // Unlock all nodes after layout completes
     setTimeout(() => {
+      cy.nodes().unlock();
       this.cachePositions(cy);
     }, config.animate ? config.animationDuration + 50 : 50);
   }
@@ -121,9 +197,16 @@ export class StableLayoutService {
       }
     });
 
-    // Step 2: Lock unaffected nodes
+    // Step 2: Lock unaffected nodes AND manually positioned nodes
+    const manualPositions = this._manualPositions();
     cy.nodes().forEach((node: NodeSingular) => {
-      if (!allAffectedIds.has(node.id())) {
+      const nodeId = node.id();
+      // Lock if: not affected OR has manual position
+      if (!allAffectedIds.has(nodeId) || nodeId in manualPositions) {
+        // Apply manual position if it exists
+        if (manualPositions[nodeId]) {
+          node.position(manualPositions[nodeId]);
+        }
         node.lock();
       }
     });

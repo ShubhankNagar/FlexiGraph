@@ -127,6 +127,9 @@ export function edgeStyleToCytoscape(style: EdgeStyleConfig): Record<string, any
   if (style.arrowColor) cyStyle['target-arrow-color'] = style.arrowColor;
   if (style.curveStyle) cyStyle['curve-style'] = style.curveStyle;
   if (style.lineStyle) cyStyle['line-style'] = style.lineStyle;
+  
+  // Ensure edges render above nodes in dense layouts (grid, circle)
+  cyStyle['z-index'] = 999;
 
   return cyStyle;
 }
@@ -226,6 +229,20 @@ export function generateCytoscapeStylesheet(config: StylingConfig): any[] {
     style: {
       'opacity': 0.7,
       'z-index': 999
+    }
+  });
+
+  // Locked position node style - subtle indicator with lock emoji in label
+  stylesheet.push({
+    selector: '.position-locked',
+    style: {
+      'border-style': 'solid',
+      'border-width': 1,
+      'border-color': '#475569',
+      'label': (ele: { data: (key: string) => string }) => {
+        const originalLabel = ele.data('label') || '';
+        return `${originalLabel} 🔒`;
+      }
     }
   });
 

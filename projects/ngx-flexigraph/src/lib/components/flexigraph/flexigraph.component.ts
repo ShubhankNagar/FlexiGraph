@@ -504,7 +504,7 @@ export class FlexiGraphComponent<T = any> implements AfterViewInit, OnDestroy, O
   protected readonly validationErrorMessage = signal<string | null>(null);
   protected readonly currentZoomLevel = signal(1);
   protected readonly zoomLevelPercent = computed(() => Math.round(this.currentZoomLevel() * 100));
-  
+
   // Computed theme
   protected currentTheme = computed(() => {
     const cfg = this.config();
@@ -586,6 +586,21 @@ export class FlexiGraphComponent<T = any> implements AfterViewInit, OnDestroy, O
       action: (node) => this.onExpandNode(node),
       visible: (node) => this.collapseService.isCollapsed(node.id),
       shortcut: 'E'
+    },
+    {
+      id: 'lock-position',
+      label: 'Lock Position',
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+      action: (node) => this.onLockPosition(node),
+      visible: (node) => !this.stableLayoutService.hasManualPosition(node.id),
+      separatorBefore: true
+    },
+    {
+      id: 'unlock-position',
+      label: 'Unlock Position',
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>',
+      action: (node) => this.onUnlockPosition(node),
+      visible: (node) => this.stableLayoutService.hasManualPosition(node.id)
     },
     {
       id: 'delete',
@@ -715,9 +730,14 @@ export class FlexiGraphComponent<T = any> implements AfterViewInit, OnDestroy, O
       const dropTarget = this.findDropTarget(draggedNode);
 
       if (dropTarget) {
+        // Dropped on another node - attempt reparent
         await this.handleNodeDrop(draggedNode, dropTarget);
       } else {
-        this.snapBack(draggedNode);
+        // Dropped on empty canvas - allow free positioning
+        // Cache this position as manually set
+        this.stableLayoutService.cacheNodePosition(this.cy, draggedNode.id());
+        // Add visual indicator for locked position
+        draggedNode.addClass('position-locked');
       }
 
       this.nodeDragEnd.emit({
@@ -774,7 +794,10 @@ export class FlexiGraphComponent<T = any> implements AfterViewInit, OnDestroy, O
 
     // Update Cytoscape with simple layout
     this.syncCytoscapeWithService();    // Layout and fit
-    this.stableLayoutService.runStableLayout(this.cy, layoutCfg, { type: 'full', affectedNodeIds: [] });
+    this.stableLayoutService.runStableLayout(this.cy, layoutCfg, { 
+      type: 'reparent', 
+      affectedNodeIds: [childId, parentId] 
+    });
 
     // Emit event
     const newParentIds = this.graphService.getNode(childId)?.parentIds || [];
@@ -851,7 +874,10 @@ export class FlexiGraphComponent<T = any> implements AfterViewInit, OnDestroy, O
     });
   }
 
-  private setupCustomEvents(): void {
+  /**
+   * Handle Cytoscape initialization
+   */
+  private setupGraphListeners(): void {
     // Show context menu
     this.cy.on('cxttap', 'node', (event) => {
       const node = event.target;
@@ -1017,6 +1043,73 @@ export class FlexiGraphComponent<T = any> implements AfterViewInit, OnDestroy, O
       this.nodeDelete.emit({ node });
       this.emitStateChange();
     }
+  }
+
+  /**
+   * Lock node position - prevents layout from moving this node
+   */
+  private onLockPosition(node: FlexiNode<T>): void {
+    this.stableLayoutService.cacheNodePosition(this.cy, node.id);
+    // Add visual indicator
+    const cyNode = this.cy.getElementById(node.id);
+    if (cyNode.length > 0) {
+      cyNode.addClass('position-locked');
+    }
+    this.contextMenuService.hide();
+  }
+
+  /**
+   * Unlock node position - allows layout to move this node again
+   */
+  private onUnlockPosition(node: FlexiNode<T>): void {
+    this.stableLayoutService.clearManualPosition(node.id);
+    // Remove visual indicator
+    const cyNode = this.cy.getElementById(node.id);
+    if (cyNode.length > 0) {
+      cyNode.removeClass('position-locked');
+    }
+    this.contextMenuService.hide();
+  }
+
+  /**
+   * Unlock all node positions - public API for demo toolbar
+   */
+  unlockAllPositions(): void {
+    const lockedIds = this.stableLayoutService.getLockedNodeIds();
+    lockedIds.forEach(id => {
+      const cyNode = this.cy.getElementById(id);
+      if (cyNode.length > 0) {
+        cyNode.removeClass('position-locked');
+      }
+    });
+    this.stableLayoutService.clearAllManualPositions();
+  }
+
+  /**
+   * Get count of locked nodes
+   */
+  getLockedNodeCount(): number {
+    return this.stableLayoutService.getLockedNodeCount();
+  }
+
+  /**
+   * Get total node count (for lock all logic)
+   */
+  getTotalNodeCount(): number {
+    return this.cy?.nodes().length || 0;
+  }
+
+  /**
+   * Lock all node positions - public API for demo toolbar
+   */
+  lockAllPositions(): void {
+    this.cy?.nodes().forEach((node: any) => {
+      const nodeId = node.id();
+      if (!this.stableLayoutService.hasManualPosition(nodeId)) {
+        this.stableLayoutService.cacheNodePosition(this.cy, nodeId);
+        node.addClass('position-locked');
+      }
+    });
   }
 
   /**

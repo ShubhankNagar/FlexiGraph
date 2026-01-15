@@ -1,4 +1,4 @@
-import { Component, inject, output, signal } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { AppStateService, LayoutType } from '../../../../core/services/state.service';
 
 /**
@@ -15,11 +15,14 @@ export class ToolbarComponent {
   
   readonly isVisible = signal(true);
   readonly zoomLevel = signal(100);
+  readonly lockedCount = input(0);
+  readonly totalCount = input(0);
   
   readonly zoomIn = output<void>();
   readonly zoomOut = output<void>();
   readonly zoomFit = output<void>();
   readonly resetLayout = output<void>();
+  readonly toggleLock = output<void>();
 
   onLayoutChange(layout: LayoutType): void {
     this.state.setLayout(layout);
@@ -29,5 +32,9 @@ export class ToolbarComponent {
 
   setZoomLevel(level: number): void {
     this.zoomLevel.set(Math.round(level * 100));
+  }
+
+  onToggleLock(): void {
+    this.toggleLock.emit();
   }
 }

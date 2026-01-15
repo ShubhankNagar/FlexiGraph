@@ -223,4 +223,25 @@ export class WorkspaceComponent implements AfterViewInit {
       this.state.showToast('Import failed', 'error');
     }
   }
+
+  // Position locking
+  getLockedCount(): number {
+    return this.graphComponent?.getLockedNodeCount() || 0;
+  }
+
+  getTotalCount(): number {
+    return this.graphComponent?.getTotalNodeCount() || 0;
+  }
+
+  onToggleLock(): void {
+    if (this.getLockedCount() > 0) {
+      // Unlock all if any are locked
+      this.graphComponent?.unlockAllPositions();
+      this.state.showToast('All positions unlocked', 'success');
+    } else {
+      // Lock all if none are locked
+      this.graphComponent?.lockAllPositions();
+      this.state.showToast('All positions locked', 'success');
+    }
+  }
 }

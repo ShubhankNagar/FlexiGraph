@@ -16,8 +16,9 @@
         <app-sidebar></app-sidebar>
 
         <!-- Floating Toolbar -->
-        <app-toolbar (zoomIn)="graphComponent.zoomIn()" (zoomOut)="graphComponent.zoomOut()"
-            (zoomFit)="graphComponent.zoomFit()" (resetLayout)="graphComponent.forceFullLayout()" #toolbar>
+        <app-toolbar [lockedCount]="getLockedCount()" [totalCount]="getTotalCount()" (zoomIn)="graphComponent.zoomIn()"
+            (zoomOut)="graphComponent.zoomOut()" (zoomFit)="graphComponent.zoomFit()"
+            (resetLayout)="graphComponent.forceFullLayout()" (toggleLock)="onToggleLock()" #toolbar>
         </app-toolbar>
 
         <!-- Help Hint -->
