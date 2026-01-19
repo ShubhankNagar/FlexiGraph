@@ -59,7 +59,7 @@
     "@angular-devkit/core": "^21.0.0",
     "@angular/cli": "^21.0.5",
     "@angular/compiler-cli": "^21.0.0",
-    "@compodoc/compodoc": "^1.1.32",
+    "@compodoc/compodoc": "^1.2.0",
     "@storybook/addon-a11y": "^10.1.11",
     "@storybook/addon-docs": "^10.1.11",
     "@storybook/addon-onboarding": "^10.1.11",
